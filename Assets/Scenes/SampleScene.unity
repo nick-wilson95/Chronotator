@@ -770,7 +770,6 @@ MonoBehaviour:
   manualSnapshots: 0
   videoReader: {fileID: 509814726}
   cube: {fileID: 2130376872}
-  plane: {fileID: 1686365180}
   snapshotMaterial: {fileID: 2100000, guid: cb84235e43be4cb42ad81194c8ed51e4, type: 2}
   snapshotImage: {fileID: 1691343338}
 --- !u!224 &1691343337
