@@ -64,7 +64,7 @@ public class Snapshooter : MonoBehaviour
     {
         snapshotMaterial.mainTexture = texture;
 
-        // Due to Unity bug, material needs to be refreshed
+        // Due to Unity bug, material needs to be reassigned
         snapshotImage.material = null;
         snapshotImage.material = snapshotMaterial;
     }

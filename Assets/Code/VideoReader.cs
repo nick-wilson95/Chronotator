@@ -45,11 +45,7 @@ public class VideoReader : MonoBehaviour
 
         if ((int)videoPlayer.frame > 0)
         {
-            var width = (int)videoRect.rect.width;
-            var height = (int) (width * ((float)videoPlayer.height / videoPlayer.width));
-            var y = (Screen.height - height) / (float)2;
-
-            var texture = new Texture2D(width, height, TextureFormat.RGB24, false);
+            var texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
             var rect = new Rect(0, 0, Screen.width, Screen.height);
 
             texture.ReadPixels(rect, 0, 0);
