@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,7 +9,6 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private RectTransform videoRect;
 
     private List<Texture2D> textures = new List<Texture2D>();
-    private WaitForEndOfFrame frameEnd = new WaitForEndOfFrame();
 
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
 
@@ -23,7 +21,8 @@ public class VideoReader : MonoBehaviour
     {
         if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 1)
         {
-            ReadTexture();
+            videoPlayer.StepForward();
+            this.OnFrameEnd(ReadTexture);
         }
         else
         {
@@ -32,17 +31,8 @@ public class VideoReader : MonoBehaviour
         }
     }
 
-    private void ReadTexture()
+    public void ReadTexture()
     {
-        videoPlayer.StepForward();
-
-        StartCoroutine(UpdateTexture());
-    }
-
-    public IEnumerator UpdateTexture()
-    {
-        yield return frameEnd;
-
         if ((int)videoPlayer.frame > 0)
         {
             var texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);

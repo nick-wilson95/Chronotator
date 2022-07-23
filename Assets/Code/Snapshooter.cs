@@ -4,13 +4,12 @@ using UnityEngine.UI;
 
 public class Snapshooter : MonoBehaviour
 {
-    [SerializeField] private bool manualSnapshots;
     [SerializeField] private VideoReader videoReader;
     [SerializeField] private Transform cube;
     [SerializeField] private Material snapshotMaterial;
     [SerializeField] private Image snapshotImage;
 
-    private bool readyToSnap = false;
+    private bool texturesLoaded = false;
     private Texture2D snapshotTexture;
     private SnapshotRenderer snapshotRenderer;
 
@@ -28,17 +27,17 @@ public class Snapshooter : MonoBehaviour
 
         snapshotRenderer = new SnapshotRenderer(textures, snapshotTexture, cube);
 
-        readyToSnap = true;
+        texturesLoaded = true;
 
         TakeSnapshot();
     }
 
     private void Update()
     {
-        var cubeHasMoved = cubePositionLastFrame != cube.position
-            || cubeRotationLastFrame.eulerAngles.y != cube.rotation.eulerAngles.y;
+        var cubeHasMoved = cubePositionLastFrame != cube.position;
+        var cubeHasRotated = cubeRotationLastFrame.eulerAngles.y != cube.rotation.eulerAngles.y;
 
-        if (cubeHasMoved && (!manualSnapshots || Input.GetKeyDown(KeyCode.Space)))
+        if (cubeHasMoved || cubeHasRotated)
         {
             TakeSnapshot();
         }
@@ -49,7 +48,7 @@ public class Snapshooter : MonoBehaviour
 
     public void TakeSnapshot()
     {
-        if (!readyToSnap)
+        if (!texturesLoaded)
         {
             Debug.Log("Can't build snapshot - textures not loaded");
             return;
