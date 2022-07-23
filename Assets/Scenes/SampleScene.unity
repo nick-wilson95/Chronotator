@@ -767,7 +767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aa7d643428207b49bc66e217956cefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manualSnapshots: 0
   videoReader: {fileID: 509814726}
   cube: {fileID: 2130376872}
   snapshotMaterial: {fileID: 2100000, guid: cb84235e43be4cb42ad81194c8ed51e4, type: 2}
