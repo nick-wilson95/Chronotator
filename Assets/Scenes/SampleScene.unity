@@ -1209,6 +1209,7 @@ Transform:
   - {fileID: 217360303}
   - {fileID: 1659206244}
   - {fileID: 509814725}
+  - {fileID: 364841975}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1351,6 +1352,55 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &364841974
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 364841975}
+  - component: {fileID: 364841976}
+  m_Layer: 0
+  m_Name: SnapShooter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &364841975
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364841974}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 244263809}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &364841976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364841974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e75a0b5aabbeea49938ecca99ccbd42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  videoReader: {fileID: 509814726}
+  cube: {fileID: 2130376872}
+  snapshotMaterial: {fileID: 2100000, guid: cb84235e43be4cb42ad81194c8ed51e4, type: 2}
+  snapshotImage: {fileID: 1691343338}
+  snapshotTransform: {fileID: 1691343337}
 --- !u!1 &429056116
 GameObject:
   m_ObjectHideFlags: 0
@@ -2490,6 +2540,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317683963}
   m_CullTransparentMesh: 1
+--- !u!1 &1349075274
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1349075275}
+  m_Layer: 0
+  m_Name: Physical
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1349075275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349075274}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1686365180}
+  - {fileID: 2130376872}
+  - {fileID: 1544430210}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1349476564
 GameObject:
   m_ObjectHideFlags: 0
@@ -2683,13 +2767,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1544430206}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 100, y: 1, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 1349075275}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1572946383
 GameObject:
@@ -2856,6 +2940,12 @@ MonoBehaviour:
   OnVideoChange:
     m_PersistentCalls:
       m_Calls: []
+  OnSpeedChange:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRotationSpeedChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1659206246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2973,13 +3063,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686365176}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1349075275}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 180}
 --- !u!1 &1691343335
 GameObject:
@@ -2990,33 +3080,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1691343337}
-  - component: {fileID: 1691343336}
   - component: {fileID: 1691343339}
   - component: {fileID: 1691343338}
   m_Layer: 0
-  m_Name: Snapshooter
+  m_Name: Snapshot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1691343336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1691343335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7aa7d643428207b49bc66e217956cefb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videoReader: {fileID: 509814726}
-  cube: {fileID: 2130376872}
-  snapshotMaterial: {fileID: 2100000, guid: cb84235e43be4cb42ad81194c8ed51e4, type: 2}
-  snapshotImage: {fileID: 1691343338}
-  snapshotTransform: {fileID: 1691343337}
 --- !u!224 &1691343337
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3586,13 +3658,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2130376868}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_Father: {fileID: 1349075275}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2130376873
 MonoBehaviour:
@@ -3606,5 +3678,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db6d7f0c02a65144abc6db23c7abd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.4
-  rotationSpeed: 30
+  settings: {fileID: 1659206245}
+  videoReader: {fileID: 509814726}
+  minSpeed: 0.1
+  maxSpeed: 1
+  minRotationSpeed: 10
+  maxRotationSpeed: 100
