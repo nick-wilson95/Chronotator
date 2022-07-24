@@ -10,7 +10,6 @@ public class Snapshooter : MonoBehaviour
     [SerializeField] private Image snapshotImage;
     [SerializeField] private RectTransform snapshotTransform;
 
-    private bool texturesLoaded = false;
     private Texture2D snapshotTexture;
     private SnapshotRenderer snapshotRenderer;
 
@@ -27,7 +26,7 @@ public class Snapshooter : MonoBehaviour
         var cubeHasMoved = cubePositionLastFrame != cube.position;
         var cubeHasRotated = cubeRotationLastFrame.eulerAngles.y != cube.rotation.eulerAngles.y;
 
-        if (cubeHasMoved || cubeHasRotated)
+        if (!videoReader.IsReading && (cubeHasMoved || cubeHasRotated))
         {
             TakeSnapshot();
         }
@@ -42,8 +41,6 @@ public class Snapshooter : MonoBehaviour
 
         snapshotRenderer = new SnapshotRenderer(textures, snapshotTexture, cube);
 
-        texturesLoaded = true;
-
         TakeSnapshot();
     }
 
@@ -57,12 +54,6 @@ public class Snapshooter : MonoBehaviour
 
     public void TakeSnapshot()
     {
-        if (!texturesLoaded)
-        {
-            Debug.Log("Can't build snapshot - textures not loaded");
-            return;
-        }
-
         snapshotRenderer.Render();
 
         SetSnapshotTexture(snapshotTexture);

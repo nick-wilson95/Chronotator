@@ -11,11 +11,9 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private RawImage videoPreview;
     [SerializeField] private RectTransform videoPreviewRect;
 
-    private bool isReading = false;
-
     private readonly List<Texture2D> textures = new List<Texture2D>();
-
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
+    public bool IsReading { get; private set; } = false;
 
     private void Start()
     {
@@ -24,7 +22,7 @@ public class VideoReader : MonoBehaviour
 
     private void Update()
     {
-        if (!isReading) return;
+        if (!IsReading) return;
 
         if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 1)
         {
@@ -35,7 +33,7 @@ public class VideoReader : MonoBehaviour
         {
             OnFinishReading.Invoke(textures);
             videoPreview.enabled = false;
-            isReading = false;
+            IsReading = false;
         }
     }
 
@@ -49,7 +47,7 @@ public class VideoReader : MonoBehaviour
         FitVideoOutsideScreen();
 
         textures.Clear();
-        isReading = true;
+        IsReading = true;
     }
 
     private void FitVideoOutsideScreen()

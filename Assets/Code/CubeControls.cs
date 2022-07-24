@@ -3,6 +3,7 @@ using UnityEngine;
 public class CubeControls : MonoBehaviour
 {
     [SerializeField] private Settings settings;
+    [SerializeField] private VideoReader videoReader;
 
     [SerializeField] private float minSpeed;
     [SerializeField] private float maxSpeed;
@@ -24,6 +25,8 @@ public class CubeControls : MonoBehaviour
 
     private void Update()
     {
+        if (videoReader.IsReading) return;
+
         HandleZMovement();
         HandleRotation();
     }
