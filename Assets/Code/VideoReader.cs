@@ -1,26 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using UnityEngine.Video;
 
 public class VideoReader : MonoBehaviour
 {
     [SerializeField] private VideoPlayer videoPlayer;
-    [SerializeField] private RectTransform videoRect;
+    [SerializeField] private Settings settings;
+    [SerializeField] private RawImage videoPreview;
+    [SerializeField] private RectTransform videoPreviewRect;
+
+    private bool isReading = false;
 
     private readonly List<Texture2D> textures = new List<Texture2D>();
 
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
 
-    public void Awake()
+    private void Start()
     {
-        videoPlayer.Pause();
-
-        FitVideoOutsideScreen();
+        settings.OnVideoChange.AddListener(ReadVideo);
     }
 
-    public void Update()
+    private void Update()
     {
+        if (!isReading) return;
+
         if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 1)
         {
             videoPlayer.StepForward();
@@ -29,8 +34,22 @@ public class VideoReader : MonoBehaviour
         else
         {
             OnFinishReading.Invoke(textures);
-            Destroy(gameObject);
+            videoPreview.enabled = false;
+            isReading = false;
         }
+    }
+
+    private void ReadVideo(Video video)
+    {
+        videoPreview.enabled = true;
+        videoPlayer.clip = video.Clip;
+        videoPlayer.frame = 0;
+        videoPlayer.Pause();
+
+        FitVideoOutsideScreen();
+
+        textures.Clear();
+        isReading = true;
     }
 
     private void FitVideoOutsideScreen()
@@ -42,8 +61,8 @@ public class VideoReader : MonoBehaviour
             ? Screen.width
             : Screen.width * (widthRatio / heightRatio);
 
-        videoRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scale);
-        videoRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, scale);
+        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scale);
+        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, scale);
     }
 
     public void ReadTexture()

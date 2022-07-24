@@ -2,11 +2,25 @@ using UnityEngine;
 
 public class CubeControls : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float rotationSpeed;
+    [SerializeField] private Settings settings;
+
+    [SerializeField] private float minSpeed;
+    [SerializeField] private float maxSpeed;
+
+    [SerializeField] private float minRotationSpeed;
+    [SerializeField] private float maxRotationSpeed;
+
+    private float speed;
+    private float rotationSpeed;
 
     private Vector3 MovementUnit => speed * Time.deltaTime * Vector3.forward;
     private float RotationDegrees => Time.deltaTime * rotationSpeed;
+
+    private void Start()
+    {
+        settings.OnSpeedChange.AddListener(SetSpeed);
+        settings.OnRotationSpeedChange.AddListener(SetRotationSpeed);
+    }
 
     private void Update()
     {
@@ -42,5 +56,15 @@ public class CubeControls : MonoBehaviour
         {
             transform.Rotate(Vector3.up, -RotationDegrees);
         }
+    }
+
+    private void SetSpeed(float value)
+    {
+        speed = Mathf.Lerp(minSpeed, maxSpeed, value);
+    }
+
+    private void SetRotationSpeed(float value)
+    {
+        rotationSpeed = Mathf.Lerp(minRotationSpeed, maxRotationSpeed, value);
     }
 }
