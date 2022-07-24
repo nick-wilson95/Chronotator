@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class SnapshotRenderer
 {
-    private List<Texture2D> textures;
+    private readonly List<Texture2D> textures;
     private readonly Transform cube;
-    private int frameCount;
-    private int frameWidth;
+    private readonly int frameCount;
+    private readonly int frameWidth;
 
     Color32 resetColor = new Color32(0, 0, 0, 1);
-    Color32[] resetColorArray;
+    readonly Color32[] resetColorArray;
 
-    private Texture2D snapshotTexture;
+    private readonly Texture2D snapshotTexture;
     private bool isReset = false;
 
     public SnapshotRenderer(List<Texture2D> textures, Texture2D snapshotTexture, Transform cube)
