@@ -8,7 +8,7 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private RectTransform videoRect;
 
-    private List<Texture2D> textures = new List<Texture2D>();
+    private readonly List<Texture2D> textures = new List<Texture2D>();
 
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
 
@@ -48,7 +48,7 @@ public class VideoReader : MonoBehaviour
 
     public void ReadTexture()
     {
-        if ((int)videoPlayer.frame > 0)
+        if (videoPlayer.frame > 0)
         {
             var texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
             var rect = new Rect(0, 0, Screen.width, Screen.height);
