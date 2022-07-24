@@ -15,6 +15,8 @@ public class VideoReader : MonoBehaviour
     public void Awake()
     {
         videoPlayer.Pause();
+
+        FitVideoOutsideScreen();
     }
 
     public void Update()
@@ -29,6 +31,19 @@ public class VideoReader : MonoBehaviour
             OnFinishReading.Invoke(textures);
             Destroy(gameObject);
         }
+    }
+
+    private void FitVideoOutsideScreen()
+    {
+        var widthRatio = (float)videoPlayer.clip.width / Screen.width;
+        var heightRatio = (float)videoPlayer.clip.height / Screen.height;
+
+        var scale = heightRatio > widthRatio
+            ? Screen.width
+            : Screen.width * (widthRatio / heightRatio);
+
+        videoRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scale);
+        videoRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, scale);
     }
 
     public void ReadTexture()

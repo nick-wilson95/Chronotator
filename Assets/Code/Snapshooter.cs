@@ -8,6 +8,7 @@ public class Snapshooter : MonoBehaviour
     [SerializeField] private Transform cube;
     [SerializeField] private Material snapshotMaterial;
     [SerializeField] private Image snapshotImage;
+    [SerializeField] private RectTransform snapshotTransform;
 
     private bool texturesLoaded = false;
     private Texture2D snapshotTexture;
@@ -19,17 +20,6 @@ public class Snapshooter : MonoBehaviour
     private void Start()
     {
         videoReader.OnFinishReading.AddListener(GetTextures);
-    }
-
-    private void GetTextures(List<Texture2D> textures)
-    {
-        snapshotTexture = new Texture2D((int)(1.5f * textures[0].width), textures[0].height, TextureFormat.RGB24, false);
-
-        snapshotRenderer = new SnapshotRenderer(textures, snapshotTexture, cube);
-
-        texturesLoaded = true;
-
-        TakeSnapshot();
     }
 
     private void Update()
@@ -44,6 +34,25 @@ public class Snapshooter : MonoBehaviour
 
         cubePositionLastFrame = cube.position;
         cubeRotationLastFrame = cube.rotation;
+    }
+
+    private void GetTextures(List<Texture2D> textures)
+    {
+        snapshotTexture = CreateSnapshotTexture(textures[0]);
+
+        snapshotRenderer = new SnapshotRenderer(textures, snapshotTexture, cube);
+
+        texturesLoaded = true;
+
+        TakeSnapshot();
+    }
+
+    private Texture2D CreateSnapshotTexture(Texture2D sampleFrame)
+    {
+        var snapshotTextureHeight = sampleFrame.height;
+        var snapshotTextureWidth = sampleFrame.height * snapshotTransform.rect.width / snapshotTransform.rect.height;
+
+        return new Texture2D((int)snapshotTextureWidth, snapshotTextureHeight, TextureFormat.RGB24, false);
     }
 
     public void TakeSnapshot()
