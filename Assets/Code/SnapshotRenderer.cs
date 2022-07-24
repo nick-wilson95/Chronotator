@@ -71,6 +71,8 @@ public class SnapshotRenderer
         var leftPixelBound = (int)(snapshotTextureCentreX + bounds.Left * frameWidth / 2);
         var rightPixelBound = (int)(snapshotTextureCentreX + bounds.Right * frameWidth / 2);
 
+        if (rightPixelBound == leftPixelBound) return;
+
         for (var i = 0; i <= rightPixelBound - leftPixelBound; i++)
         {
             var topFaceLocation = Vector2.Lerp(bounds.RelativeLeft, bounds.RelativeRight, (float)i / (rightPixelBound - leftPixelBound));
