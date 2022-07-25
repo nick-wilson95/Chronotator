@@ -11,7 +11,7 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private RawImage videoPreview;
     [SerializeField] private RectTransform videoPreviewRect;
 
-    private readonly List<Texture2D> textures = new List<Texture2D>();
+    private readonly List<Texture2D> textures = new();
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
     public bool IsReading { get; private set; } = false;
 
