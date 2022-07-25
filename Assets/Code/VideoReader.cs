@@ -17,7 +17,8 @@ public class VideoReader : MonoBehaviour
 
     private void Start()
     {
-        settings.OnVideoChange.AddListener(ReadVideo);
+        //settings.OnVideoChange.AddListener(ReadVideo);
+        VideoExplorer.SelectVideo(ReadVideo);
     }
 
     private void Update()
@@ -37,23 +38,27 @@ public class VideoReader : MonoBehaviour
         }
     }
 
-    private void ReadVideo(Video video)
+    private void ReadVideo(string url)
     {
-        videoPreview.enabled = true;
-        videoPlayer.clip = video.Clip;
-        videoPlayer.frame = 0;
-        videoPlayer.Pause();
+        videoPlayer.url = url;
 
-        FitVideoOutsideScreen();
+        this.OnVideoLoaded(videoPlayer, () =>
+        {
+            videoPreview.enabled = true;
+            videoPlayer.frame = 0;
+            videoPlayer.Pause();
 
-        textures.Clear();
-        IsReading = true;
+            FitVideoOutsideScreen();
+
+            textures.Clear();
+            IsReading = true;
+        });
     }
 
     private void FitVideoOutsideScreen()
     {
-        var widthRatio = (float)videoPlayer.clip.width / Screen.width;
-        var heightRatio = (float)videoPlayer.clip.height / Screen.height;
+        var widthRatio = (float)videoPlayer.texture.width / Screen.width;
+        var heightRatio = (float)videoPlayer.texture.height / Screen.height;
 
         var scale = heightRatio > widthRatio
             ? Screen.width
