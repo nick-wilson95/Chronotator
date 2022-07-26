@@ -17,8 +17,8 @@ public class VideoReader : MonoBehaviour
 
     private void Start()
     {
-        //settings.OnVideoChange.AddListener(ReadVideo);
-        VideoExplorer.SelectVideo(ReadVideo);
+        settings.OnVideoSelection.AddListener(x => ReadFromCip(x));
+        settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
     }
 
     private void Update()
@@ -38,10 +38,20 @@ public class VideoReader : MonoBehaviour
         }
     }
 
-    private void ReadVideo(string url)
+    private void ReadFromUrl(string url)
     {
         videoPlayer.url = url;
+        ReadVideo();
+    }
 
+    private void ReadFromCip(Video video)
+    {
+        videoPlayer.clip = video.Clip;
+        ReadVideo();
+    }
+
+    private void ReadVideo()
+    {
         this.OnVideoLoaded(videoPlayer, () =>
         {
             videoPreview.enabled = true;

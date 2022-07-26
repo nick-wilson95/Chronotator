@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -8,12 +9,16 @@ public class Settings : MonoBehaviour
 {
     [SerializeField] private VideoLookup videoLookup;
     [SerializeField] private TMP_Dropdown videoDropdown;
+    [SerializeField] private Button videoBrowser;
     [SerializeField] private Slider speedSlider;
     [SerializeField] private Slider rotationSlider;
 
+    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider };
+
     private Video CurrentVideo;
 
-    [HideInInspector] public UnityEvent<Video> OnVideoChange = new();
+    [HideInInspector] public UnityEvent<Video> OnVideoSelection = new();
+    [HideInInspector] public UnityEvent<string> OnVideoUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
 
@@ -21,10 +26,10 @@ public class Settings : MonoBehaviour
     {
         var options = videoLookup.Videos.Select(x => x.Name);
         videoDropdown.SetOptions(options);
-        this.OnFrameEnd(BroadcastSettings);
+        this.OnFrameEnd(BroadcastInitialSettings);
     }
 
-    private void BroadcastSettings()
+    private void BroadcastInitialSettings()
     {
         OnVideoDropdownChange();
         OnSpeedSliderChange();
@@ -37,7 +42,17 @@ public class Settings : MonoBehaviour
 
         CurrentVideo = videoLookup.Videos.Single(x => x.Name == videoName);
 
-        OnVideoChange.Invoke(CurrentVideo);
+        OnVideoSelection.Invoke(CurrentVideo);
+    }
+
+    public void OnVideoBrowserClick()
+    {
+        DisableSettings();
+
+        VideoExplorer.SelectVideo(
+            x => { OnVideoUrlSelection.Invoke(x); EnableSettings(); },
+            EnableSettings
+        );
     }
 
     public void OnSpeedSliderChange()
@@ -50,5 +65,15 @@ public class Settings : MonoBehaviour
     {
         var rotationSpeed = rotationSlider.value / rotationSlider.maxValue;
         OnRotationSpeedChange.Invoke(rotationSpeed);
+    }
+
+    private void EnableSettings()
+    {
+        Selectables.ForEach(x => x.interactable = true);
+    }
+
+    private void DisableSettings()
+    {
+        Selectables.ForEach(x => x.interactable = false);
     }
 }
