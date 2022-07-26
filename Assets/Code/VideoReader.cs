@@ -58,34 +58,44 @@ public class VideoReader : MonoBehaviour
             videoPlayer.frame = 0;
             videoPlayer.Pause();
 
-            FitVideoOutsideScreen();
+            FitVideoInsideScreen();
 
             textures.Clear();
             IsReading = true;
         });
     }
 
-    private void FitVideoOutsideScreen()
+    // Ensures video preview takes up less than half the width of the screen
+    private void FitVideoInsideScreen()
     {
-        var widthRatio = (float)videoPlayer.texture.width / Screen.width;
-        var heightRatio = (float)videoPlayer.texture.height / Screen.height;
+        var scaleDown = videoPlayer.texture.width * 2 > Screen.width
+            ? GetScaleDown()
+            : 1;
 
-        var scale = heightRatio > widthRatio
-            ? Screen.width
-            : Screen.width * (widthRatio / heightRatio);
-
-        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, scale);
-        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, scale);
+        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, videoPlayer.texture.width / scaleDown);
+        videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, videoPlayer.texture.width / scaleDown);
     }
 
-    public void ReadTexture()
+    private int GetScaleDown()
+    {
+        var logDiff = Mathf.Log(videoPlayer.texture.width, 2) - Mathf.Log(Screen.width, 2);
+
+        return (int)Mathf.Pow(2, Mathf.CeilToInt(logDiff + 1));
+    }
+
+    private void ReadTexture()
     {
         if (videoPlayer.frame > 0)
         {
-            var texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-            var rect = new Rect(0, 0, Screen.width, Screen.height);
+            var previewWidth = (int)videoPreviewRect.rect.width;
+            var previewHeight = (int)videoPreviewRect.rect.width * videoPlayer.texture.height / videoPlayer.texture.width;
+            previewHeight = Mathf.Clamp(previewHeight, 0, Screen.height);
 
-            texture.ReadPixels(rect, 0, 0);
+            var texture = new Texture2D(previewWidth, previewHeight, TextureFormat.RGB24, false);
+
+            var previewRect = new Rect((Screen.width - previewWidth) / 2, (Screen.height - previewHeight) / 2, previewWidth, previewHeight);
+
+            texture.ReadPixels(previewRect, 0, 0);
             texture.Apply();
 
             textures.Add(texture);

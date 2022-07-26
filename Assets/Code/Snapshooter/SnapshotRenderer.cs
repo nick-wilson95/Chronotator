@@ -8,7 +8,7 @@ public class SnapshotRenderer
     private readonly int frameCount;
     private readonly int frameWidth;
 
-    Color32 resetColor = new Color32(0, 0, 0, 1);
+    Color32 resetColor = new(0, 0, 0, 1);
     readonly Color32[] resetColorArray;
 
     private readonly Texture2D snapshotTexture;
@@ -44,8 +44,6 @@ public class SnapshotRenderer
         isReset = false;
 
         var bounds = intersectionCalculator.GetIntersectionBounds();
-
-        DrawXBounds(bounds);
 
         SetPixels(bounds);
     }
@@ -98,10 +96,5 @@ public class SnapshotRenderer
     {
         snapshotTexture.SetPixels32(resetColorArray);
         snapshotTexture.Apply();
-    }
-
-    private void DrawXBounds(Bounds bounds)
-    {
-        Debug.DrawLine(Vector3.right * bounds.Left + Vector3.up, Vector3.right * bounds.Right + Vector3.up, Color.green);
     }
 }

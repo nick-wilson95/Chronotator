@@ -13,14 +13,12 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider speedSlider;
     [SerializeField] private Slider rotationSlider;
 
-    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider };
-
-    private Video CurrentVideo;
-
     [HideInInspector] public UnityEvent<Video> OnVideoSelection = new();
     [HideInInspector] public UnityEvent<string> OnVideoUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
+
+    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider };
 
     private void Start()
     {
@@ -40,9 +38,9 @@ public class Settings : MonoBehaviour
     {
         var videoName = videoDropdown.GetCurrentOption();
 
-        CurrentVideo = videoLookup.Videos.Single(x => x.Name == videoName);
+        var video = videoLookup.Videos.Single(x => x.Name == videoName);
 
-        OnVideoSelection.Invoke(CurrentVideo);
+        OnVideoSelection.Invoke(video);
     }
 
     public void OnVideoBrowserClick()
