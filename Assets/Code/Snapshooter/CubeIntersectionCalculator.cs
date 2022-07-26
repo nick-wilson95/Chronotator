@@ -14,7 +14,7 @@ public class CubeIntersectionCalculator
         new Vector2(-1, 1)
     };
 
-    private Vector2[] corners;
+    private readonly Vector2[] corners;
 
     /// <summary>
     /// Calculates information about how a cube intersects with a x,y plane through the origin.
@@ -52,11 +52,11 @@ public class CubeIntersectionCalculator
 
     public static (float, float) GetSnapshotXBounds(Vector2[] corners)
     {
-        var leftIntersectingEdge = GetLeftIntersectingEdge(corners);
-        var rightIntersectingEdge = GetRightIntersectingEdge(corners);
+        var (l1, l2) = GetLeftIntersectingEdge(corners);
+        var (r1, r2) = GetRightIntersectingEdge(corners);
 
-        var leftXBound = GetXIntercept(corners[leftIntersectingEdge.v1], corners[leftIntersectingEdge.v2]);
-        var rightXBound = GetXIntercept(corners[rightIntersectingEdge.v1], corners[rightIntersectingEdge.v2]);
+        var leftXBound = GetXIntercept(corners[l1], corners[l2]);
+        var rightXBound = GetXIntercept(corners[r1], corners[r2]);
 
         return (leftXBound, rightXBound);
     }
