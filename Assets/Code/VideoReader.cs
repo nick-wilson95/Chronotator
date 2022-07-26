@@ -25,7 +25,7 @@ public class VideoReader : MonoBehaviour
     {
         if (!IsReading) return;
 
-        if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 1)
+        if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 2)
         {
             videoPlayer.StepForward();
             this.OnFrameEnd(ReadTexture);
