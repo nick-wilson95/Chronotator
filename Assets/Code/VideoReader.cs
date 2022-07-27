@@ -16,7 +16,7 @@ public class VideoReader : MonoBehaviour
 
     private void Start()
     {
-        settings.OnVideoDropdownSelection.AddListener(x => ReadFromCip(x));
+        settings.OnVideoDropdownSelection.AddListener(x => ReadFromClip(x));
         settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
     }
 
@@ -43,17 +43,25 @@ public class VideoReader : MonoBehaviour
         ReadVideo(url);
     }
 
-    private void ReadFromCip(Video video)
+    private void ReadFromClip(Video video)
     {
-        videoPlayer.clip = video.Clip;
-        ReadVideo(null);
+        if (videoPlayer.clip != video.Clip)
+        {
+            videoPlayer.clip = video.Clip;
+            ReadVideo("");
+        }
+        else if (videoPlayer.source != VideoSource.VideoClip)
+        {
+            videoPlayer.source = VideoSource.VideoClip;
+            ReadVideo("");
+        }
     }
 
     private void ReadVideo(string url)
     {
         this.OnVideoLoaded(videoPlayer, () =>
         {
-            if (videoPlayer.frame > 0)
+            if (videoPlayer.url != url)
             {
                 warningDisplay.Warn($"Can't find video at URL '{url}'");
                 return;

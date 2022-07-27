@@ -19,12 +19,19 @@ public class Settings : MonoBehaviour
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
 
+    private IEnumerable<string> videoDropdownOptions;
+
     private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider, urlInput };
+
+    private void Awake()
+    {
+        videoDropdownOptions = videoLookup.Videos.Select(x => x.Name).Prepend("Select a video...");
+    }
 
     private void Start()
     {
-        var options = videoLookup.Videos.Select(x => x.Name);
-        videoDropdown.SetOptions(options);
+        videoDropdown.SetOptions(videoDropdownOptions);
+        videoDropdown.SetValueWithoutNotify(1);
         this.OnFrameEnd(BroadcastInitialSettings);
     }
 
@@ -40,13 +47,22 @@ public class Settings : MonoBehaviour
         DisableSettings();
 
         VideoExplorer.SelectVideo(
-            x => { OnVideoUrlSelection.Invoke(x); EnableSettings(); },
+            x => {
+                OnVideoUrlSelection.Invoke(x);
+                EnableSettings();
+                ResetUrlInput();
+                ResetDropdown();
+            },
             EnableSettings
         );
     }
 
     public void OnVideoDropdownChange()
     {
+        if (videoDropdown.value == 0) return;
+
+        ResetUrlInput();
+
         var videoName = videoDropdown.GetCurrentOption();
 
         var video = videoLookup.Videos.Single(x => x.Name == videoName);
@@ -56,6 +72,7 @@ public class Settings : MonoBehaviour
 
     public void OnUrlSubmit()
     {
+        ResetDropdown();
         OnVideoUrlSelection.Invoke(urlInput.text);
     }
 
@@ -79,5 +96,15 @@ public class Settings : MonoBehaviour
     private void DisableSettings()
     {
         Selectables.ForEach(x => x.interactable = false);
+    }
+
+    private void ResetDropdown()
+    {
+        videoDropdown.value = 0;
+    }
+
+    private void ResetUrlInput()
+    {
+        urlInput.text = "";
     }
 }
