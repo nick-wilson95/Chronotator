@@ -5,6 +5,7 @@ using UnityEngine.Video;
 
 public class VideoReader : MonoBehaviour
 {
+    [SerializeField] private WarningDisplay warningDisplay;
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoPreview videoPreview;
     [SerializeField] private Settings settings;
@@ -15,7 +16,7 @@ public class VideoReader : MonoBehaviour
 
     private void Start()
     {
-        settings.OnVideoSelection.AddListener(x => ReadFromCip(x));
+        settings.OnVideoDropdownSelection.AddListener(x => ReadFromCip(x));
         settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
     }
 
@@ -39,22 +40,27 @@ public class VideoReader : MonoBehaviour
     private void ReadFromUrl(string url)
     {
         videoPlayer.url = url;
-        ReadVideo();
+        ReadVideo(url);
     }
 
     private void ReadFromCip(Video video)
     {
         videoPlayer.clip = video.Clip;
-        ReadVideo();
+        ReadVideo(null);
     }
 
-    private void ReadVideo()
+    private void ReadVideo(string url)
     {
         this.OnVideoLoaded(videoPlayer, () =>
         {
-            textures.Clear();
+            if (videoPlayer.frame > 0)
+            {
+                warningDisplay.Warn($"Can't find video at URL '{url}'");
+                return;
+            }
 
-            videoPlayer.frame = 0;
+            textures.Clear();
+            
             videoPlayer.Pause();
 
             videoPreview.Prepare(videoPlayer);

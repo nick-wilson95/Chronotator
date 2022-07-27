@@ -33,4 +33,16 @@ public static class MonoBehaviourExtensions
 
         action();
     }
+
+    public static void WaitAndAct(this MonoBehaviour monoBehaviour, int seconds, Action action)
+    {
+        monoBehaviour.StartCoroutine(ActAfterTimeElapsed(seconds, action));
+    }
+
+    public static IEnumerator ActAfterTimeElapsed(float seconds, Action action)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        action();
+    }
 }

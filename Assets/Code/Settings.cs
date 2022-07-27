@@ -12,13 +12,14 @@ public class Settings : MonoBehaviour
     [SerializeField] private Button videoBrowser;
     [SerializeField] private Slider speedSlider;
     [SerializeField] private Slider rotationSlider;
+    [SerializeField] private TMP_InputField urlInput;
 
-    [HideInInspector] public UnityEvent<Video> OnVideoSelection = new();
+    [HideInInspector] public UnityEvent<Video> OnVideoDropdownSelection = new();
     [HideInInspector] public UnityEvent<string> OnVideoUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
 
-    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider };
+    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider, urlInput };
 
     private void Start()
     {
@@ -34,15 +35,6 @@ public class Settings : MonoBehaviour
         OnRotationSliderChange();
     }
 
-    public void OnVideoDropdownChange()
-    {
-        var videoName = videoDropdown.GetCurrentOption();
-
-        var video = videoLookup.Videos.Single(x => x.Name == videoName);
-
-        OnVideoSelection.Invoke(video);
-    }
-
     public void OnVideoBrowserClick()
     {
         DisableSettings();
@@ -51,6 +43,20 @@ public class Settings : MonoBehaviour
             x => { OnVideoUrlSelection.Invoke(x); EnableSettings(); },
             EnableSettings
         );
+    }
+
+    public void OnVideoDropdownChange()
+    {
+        var videoName = videoDropdown.GetCurrentOption();
+
+        var video = videoLookup.Videos.Single(x => x.Name == videoName);
+
+        OnVideoDropdownSelection.Invoke(video);
+    }
+
+    public void OnUrlSubmit()
+    {
+        OnVideoUrlSelection.Invoke(urlInput.text);
     }
 
     public void OnSpeedSliderChange()
