@@ -67,11 +67,14 @@ public class VideoReader : MonoBehaviour
     {
         if (videoPlayer.frame > 0)
         {
-            var previewRect = videoPreview.GetRect(videoPlayer);
+            var texture = new Texture2D(
+                (int)videoPreview.Rect.width,
+                (int)videoPreview.Rect.height,
+                TextureFormat.RGB24,
+                false
+            );
 
-            var texture = new Texture2D((int)previewRect.width, (int)previewRect.height, TextureFormat.RGB24, false);
-
-            texture.ReadPixels(previewRect, 0, 0);
+            texture.ReadPixels(videoPreview.Rect, 0, 0);
             texture.Apply();
 
             textures.Add(texture);
