@@ -9,25 +9,33 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoPreview videoPreview;
     [SerializeField] private Settings settings;
-
     private readonly List<Texture2D> textures = new();
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
     public bool IsReading { get; private set; } = false;
+    private long previousVideoPlayerFrame;
 
     private void Start()
     {
+        videoPlayer.sendFrameReadyEvents = true;
+        videoPlayer.frameReady += (a,b) => OnFrameReady();
+
         settings.OnVideoDropdownSelection.AddListener(x => ReadFromClip(x));
         settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
     }
 
-    private void Update()
+    private void OnFrameReady()
     {
         if (!IsReading) return;
 
         if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 2)
         {
+            if (videoPlayer.frame != previousVideoPlayerFrame)
+            {
+                this.OnFrameEnd(ReadTexture);
+            }
             videoPlayer.StepForward();
-            this.OnFrameEnd(ReadTexture);
+
+            previousVideoPlayerFrame = videoPlayer.frame;
         }
         else
         {
@@ -74,11 +82,15 @@ public class VideoReader : MonoBehaviour
             videoPreview.Prepare(videoPlayer);
 
             IsReading = true;
+
+            previousVideoPlayerFrame = -1;
         });
     }
 
     private void ReadTexture()
     {
+        Debug.Log(videoPlayer.frame);
+
         if (videoPlayer.frame > 0)
         {
             var texture = new Texture2D(
