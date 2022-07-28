@@ -48,7 +48,7 @@ public class VideoPreview : MonoBehaviour
     {
         var previewWidth = (int)videoPreviewRect.rect.width;
         var previewHeight = (int)videoPreviewRect.rect.width * texture.height / texture.width;
-        previewHeight = Mathf.Clamp(previewHeight, 0, Screen.height);
+        previewHeight = Mathf.Clamp(previewHeight, 0, previewWidth);
 
         return new Rect((Screen.width - previewWidth) / 2, (Screen.height - previewHeight) / 2, previewWidth, previewHeight);
     }

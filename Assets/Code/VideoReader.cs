@@ -23,7 +23,7 @@ public class VideoReader : MonoBehaviour
     private void Start()
     {
         videoPlayer.sendFrameReadyEvents = true;
-        videoPlayer.frameReady += (a,b) => OnFrameReady();
+        videoPlayer.frameReady += (_,_) => OnFrameReady();
 
         settings.OnVideoDropdownSelection.AddListener(x => ReadFromClip(x));
         settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
@@ -45,6 +45,13 @@ public class VideoReader : MonoBehaviour
 
                 skipFrameCoroutine = null;
             });
+
+            if ((int)videoPlayer.frame > (int)videoPlayer.frameCount - 3)
+            {
+                OnFinishReading.Invoke(textures);
+                videoPreview.Close();
+                IsReading = false;
+            }
         }
     }
 
@@ -52,23 +59,14 @@ public class VideoReader : MonoBehaviour
     {
         if (!IsReading) return;
 
-        if ((int)videoPlayer.frame < (int)videoPlayer.frameCount - 2)
+        if (videoPlayer.frame != previousVideoPlayerFrame)
         {
-            if (videoPlayer.frame != previousVideoPlayerFrame)
-            {
-                this.OnFrameEnd(ReadTexture);
-            }
-
-            videoPlayer.StepForward();
-
-            previousVideoPlayerFrame = videoPlayer.frame;
+            this.OnFrameEnd(ReadTexture);
         }
-        else
-        {
-            OnFinishReading.Invoke(textures);
-            videoPreview.Close();
-            IsReading = false;
-        }
+
+        videoPlayer.StepForward();
+
+        previousVideoPlayerFrame = videoPlayer.frame;
     }
 
     private void ReadFromUrl(string url)
