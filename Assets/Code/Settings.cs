@@ -72,6 +72,8 @@ public class Settings : MonoBehaviour
 
     public void OnUrlSubmit()
     {
+        if (urlInput.text == "") return;
+
         ResetDropdown();
         OnVideoUrlSelection.Invoke(urlInput.text);
     }

@@ -9,10 +9,16 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private VideoPlayer videoPlayer;
     [SerializeField] private VideoPreview videoPreview;
     [SerializeField] private Settings settings;
+
     private readonly List<Texture2D> textures = new();
+
+
     public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
     public bool IsReading { get; private set; } = false;
     private long previousVideoPlayerFrame;
+
+    private Coroutine skipFrameCoroutine;
+    private const float skipFrameDelay = 0.1f;
 
     private void Start()
     {
@@ -21,6 +27,25 @@ public class VideoReader : MonoBehaviour
 
         settings.OnVideoDropdownSelection.AddListener(x => ReadFromClip(x));
         settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
+    }
+
+    private void Update()
+    {
+        if (IsReading && skipFrameCoroutine == null)
+        {
+            var currentFrame = videoPlayer.frame;
+
+            skipFrameCoroutine = this.WaitAndAct(skipFrameDelay, () =>
+            {
+                if (videoPlayer.frame == currentFrame)
+                {
+                    videoPlayer.StepForward();
+                    Debug.Log("Skipping frame");
+                }
+
+                skipFrameCoroutine = null;
+            });
+        }
     }
 
     private void OnFrameReady()
@@ -33,6 +58,7 @@ public class VideoReader : MonoBehaviour
             {
                 this.OnFrameEnd(ReadTexture);
             }
+
             videoPlayer.StepForward();
 
             previousVideoPlayerFrame = videoPlayer.frame;
@@ -89,8 +115,6 @@ public class VideoReader : MonoBehaviour
 
     private void ReadTexture()
     {
-        Debug.Log(videoPlayer.frame);
-
         if (videoPlayer.frame > 0)
         {
             var texture = new Texture2D(

@@ -34,7 +34,7 @@ public class VideoPreview : MonoBehaviour
         videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, texture.width / scaleDown);
         videoPreviewRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, texture.width / scaleDown);
 
-        return GetRect(texture);
+        return GetRekt(texture);
     }
 
     private int GetScaleDown(Texture texture)
@@ -44,7 +44,7 @@ public class VideoPreview : MonoBehaviour
         return (int)Mathf.Pow(2, Mathf.CeilToInt(logDiff + 1));
     }
 
-    private Rect GetRect(Texture texture)
+    private Rect GetRekt(Texture texture)
     {
         var previewWidth = (int)videoPreviewRect.rect.width;
         var previewHeight = (int)videoPreviewRect.rect.width * texture.height / texture.width;

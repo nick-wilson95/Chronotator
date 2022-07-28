@@ -9,10 +9,10 @@ public static class MonoBehaviourExtensions
 
     public static void OnFrameEnd(this MonoBehaviour monoBehaviour, Action action)
     {
-        monoBehaviour.StartCoroutine(ActOnFrameEnd(action));
+        monoBehaviour.StartCoroutine(OnFrameEnd(action));
     }
 
-    public static IEnumerator ActOnFrameEnd(Action action)
+    public static IEnumerator OnFrameEnd(Action action)
     {
         yield return FrameEnd;
 
@@ -21,10 +21,10 @@ public static class MonoBehaviourExtensions
 
     public static void OnVideoLoaded(this MonoBehaviour monoBehaviour, VideoPlayer videoPlayer, Action action)
     {
-        monoBehaviour.StartCoroutine(ActOnVideoLoaded(videoPlayer, action));
+        monoBehaviour.StartCoroutine(OnVideoLoaded(videoPlayer, action));
     }
 
-    public static IEnumerator ActOnVideoLoaded(VideoPlayer videoPlayer, Action action)
+    private static IEnumerator OnVideoLoaded(VideoPlayer videoPlayer, Action action)
     {
         while (!videoPlayer.isPrepared)
         {
@@ -34,12 +34,12 @@ public static class MonoBehaviourExtensions
         action();
     }
 
-    public static void WaitAndAct(this MonoBehaviour monoBehaviour, int seconds, Action action)
+    public static Coroutine WaitAndAct(this MonoBehaviour monoBehaviour, float seconds, Action action)
     {
-        monoBehaviour.StartCoroutine(ActAfterTimeElapsed(seconds, action));
+        return monoBehaviour.StartCoroutine(WaitAndAct(seconds, action));
     }
 
-    public static IEnumerator ActAfterTimeElapsed(float seconds, Action action)
+    private static IEnumerator WaitAndAct(float seconds, Action action)
     {
         yield return new WaitForSeconds(seconds);
 
