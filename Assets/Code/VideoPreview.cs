@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -7,21 +8,28 @@ public class VideoPreview : MonoBehaviour
     [SerializeField] private RawImage videoPreview;
     [SerializeField] private RectTransform videoPreviewRect;
     [SerializeField] private Image videoPreviewBackground;
+    [SerializeField] private TMP_Text cutInfoText;
 
     public Rect Rect { get; private set; }
 
     public void Close()
     {
         videoPreview.enabled = false;
-        videoPreviewBackground.enabled = false;
+        videoPreviewBackground.gameObject.SetActive(false);
     }
 
     public void Prepare(VideoPlayer videoPlayer)
     {
         videoPreview.enabled = true;
-        videoPreviewBackground.enabled = true;
+        videoPreviewBackground.gameObject.SetActive(true);
+        cutInfoText.enabled = false;
 
         Rect = FitVideoPreview(videoPlayer.texture);
+    }
+
+    public void ShowCanCut()
+    {
+        cutInfoText.enabled = true;
     }
 
     // Halves the video scale until it takes less than half the width of the screen

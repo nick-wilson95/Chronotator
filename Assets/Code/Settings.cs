@@ -15,7 +15,8 @@ public class Settings : MonoBehaviour
     [SerializeField] private TMP_InputField urlInput;
 
     [HideInInspector] public UnityEvent<Video> OnVideoDropdownSelection = new();
-    [HideInInspector] public UnityEvent<string> OnVideoUrlSelection = new();
+    [HideInInspector] public UnityEvent<string> OnVideoLocalUrlSelection = new();
+    [HideInInspector] public UnityEvent<string> OnVideoWebUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
 
@@ -48,7 +49,7 @@ public class Settings : MonoBehaviour
 
         VideoExplorer.SelectVideo(
             x => {
-                OnVideoUrlSelection.Invoke(x);
+                OnVideoLocalUrlSelection.Invoke(x);
                 EnableSettings();
                 ResetUrlInput();
                 ResetDropdown();
@@ -75,7 +76,7 @@ public class Settings : MonoBehaviour
         if (urlInput.text == "") return;
 
         ResetDropdown();
-        OnVideoUrlSelection.Invoke(urlInput.text);
+        OnVideoWebUrlSelection.Invoke(urlInput.text);
     }
 
     public void OnSpeedSliderChange()

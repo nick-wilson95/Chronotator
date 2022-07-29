@@ -10,15 +10,18 @@ public class VideoReader : MonoBehaviour
     [SerializeField] private VideoPreview videoPreview;
     [SerializeField] private Settings settings;
 
-    private readonly List<Texture2D> textures = new();
-
-
-    public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
-    public bool IsReading { get; private set; } = false;
-    private long previousVideoPlayerFrame;
+    private const int MinCutFrames = 100;
+    private const int WebUrlSkipFrameDelay = 30;
+    private const int DefaultSkipFrameDelay = 3;
 
     private Coroutine skipFrameCoroutine;
-    private const float skipFrameDelay = 0.1f;
+    private long previousVideoPlayerFrame;
+    private int skipFrameDelay;
+
+    private readonly List<Texture2D> textures = new();
+
+    public bool IsReading { get; private set; } = false;
+    public UnityEvent<List<Texture2D>> OnFinishReading { get; } = new UnityEvent<List<Texture2D>>();
 
     private void Start()
     {
@@ -26,12 +29,15 @@ public class VideoReader : MonoBehaviour
         videoPlayer.frameReady += (_,_) => OnFrameReady();
 
         settings.OnVideoDropdownSelection.AddListener(x => ReadFromClip(x));
-        settings.OnVideoUrlSelection.AddListener(x => ReadFromUrl(x));
+        settings.OnVideoLocalUrlSelection.AddListener(x => ReadFromUrl(x, false));
+        settings.OnVideoWebUrlSelection.AddListener(x => ReadFromUrl(x, true));
     }
 
     private void Update()
     {
-        if (IsReading && skipFrameCoroutine == null)
+        if (!IsReading) return;
+
+        if (skipFrameCoroutine == null)
         {
             var currentFrame = videoPlayer.frame;
 
@@ -45,13 +51,16 @@ public class VideoReader : MonoBehaviour
 
                 skipFrameCoroutine = null;
             });
+        }
 
-            if ((int)videoPlayer.frame > (int)videoPlayer.frameCount - 3)
-            {
-                OnFinishReading.Invoke(textures);
-                videoPreview.Close();
-                IsReading = false;
-            }
+        var shouldCut = Input.GetKeyDown(KeyCode.Space) && textures.Count >= MinCutFrames;
+        var finishedVideo = (int)videoPlayer.frame > (int)videoPlayer.frameCount - 3;
+
+        if (shouldCut || finishedVideo)
+        {
+            OnFinishReading.Invoke(textures);
+            videoPreview.Close();
+            IsReading = false;
         }
     }
 
@@ -69,10 +78,14 @@ public class VideoReader : MonoBehaviour
         previousVideoPlayerFrame = videoPlayer.frame;
     }
 
-    private void ReadFromUrl(string url)
+    private void ReadFromUrl(string url, bool isWebUrl)
     {
+        var skipFrameDelay = isWebUrl
+            ? WebUrlSkipFrameDelay
+            : DefaultSkipFrameDelay;
+
         videoPlayer.url = url;
-        ReadVideo(url);
+        ReadVideo(url, skipFrameDelay);
     }
 
     private void ReadFromClip(Video video)
@@ -80,17 +93,19 @@ public class VideoReader : MonoBehaviour
         if (videoPlayer.clip != video.Clip)
         {
             videoPlayer.clip = video.Clip;
-            ReadVideo("");
+            ReadVideo("", DefaultSkipFrameDelay);
         }
         else if (videoPlayer.source != VideoSource.VideoClip)
         {
             videoPlayer.source = VideoSource.VideoClip;
-            ReadVideo("");
+            ReadVideo("", DefaultSkipFrameDelay);
         }
     }
 
-    private void ReadVideo(string url)
+    private void ReadVideo(string url, int skipFrameDelay)
     {
+        this.skipFrameDelay = skipFrameDelay;
+
         this.OnVideoLoaded(videoPlayer, () =>
         {
             if (videoPlayer.url != url)
@@ -113,6 +128,11 @@ public class VideoReader : MonoBehaviour
 
     private void ReadTexture()
     {
+        if (DepthSurpassingWidth())
+        {
+            return;
+        }
+
         if (videoPlayer.frame > 0)
         {
             var texture = new Texture2D(
@@ -127,5 +147,17 @@ public class VideoReader : MonoBehaviour
 
             textures.Add(texture);
         }
+
+        if (textures.Count > MinCutFrames)
+        {
+            videoPreview.ShowCanCut();
+        }
+    }
+
+    private bool DepthSurpassingWidth()
+    {
+        var depthAsProportionOfWidth = textures.Count / videoPreview.Rect.width;
+        var frameProportion = videoPlayer.frame / (float)videoPlayer.frameCount;
+        return depthAsProportionOfWidth > frameProportion;
     }
 }
