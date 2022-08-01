@@ -13,16 +13,22 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider speedSlider;
     [SerializeField] private Slider rotationSlider;
     [SerializeField] private TMP_InputField urlInput;
+    [SerializeField] private Button urlSubmit;
+    [SerializeField] private Button perspectiveToggle;
+    [SerializeField] private TMP_Text perspectiveToggleText;
 
     [HideInInspector] public UnityEvent<Video> OnVideoDropdownSelection = new();
     [HideInInspector] public UnityEvent<string> OnVideoLocalUrlSelection = new();
     [HideInInspector] public UnityEvent<string> OnVideoWebUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
+    [HideInInspector] public UnityEvent<Perspective> OnPerspectiveToggle = new();
+
+    private Perspective perspective = Perspective.Horizontal;
 
     private IEnumerable<string> videoDropdownOptions;
 
-    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider, urlInput };
+    private List<Selectable> Selectables => new() { videoDropdown, videoBrowser, speedSlider, rotationSlider, urlInput, urlSubmit, perspectiveToggle };
 
     private void Awake()
     {
@@ -89,6 +95,17 @@ public class Settings : MonoBehaviour
     {
         var rotationSpeed = rotationSlider.value / rotationSlider.maxValue;
         OnRotationSpeedChange.Invoke(rotationSpeed);
+    }
+
+    public void OnTogglePerspective()
+    {
+        perspective = perspective == Perspective.Horizontal
+            ? Perspective.Vertical
+            : Perspective.Horizontal;
+
+        perspectiveToggleText.text = perspective.ToString();
+
+        OnPerspectiveToggle.Invoke(perspective);
     }
 
     private void EnableSettings()
