@@ -37,21 +37,7 @@ public class VideoReader : MonoBehaviour
     {
         if (!IsReading) return;
 
-        if (skipFrameCoroutine == null)
-        {
-            var currentFrame = videoPlayer.frame;
-
-            skipFrameCoroutine = this.WaitAndAct(skipFrameDelay, () =>
-            {
-                if (videoPlayer.frame == currentFrame)
-                {
-                    videoPlayer.StepForward();
-                    Debug.Log("Skipping frame");
-                }
-
-                skipFrameCoroutine = null;
-            });
-        }
+        HandleStuckFrameSkipping();
 
         var shouldCut = Input.GetKeyDown(KeyCode.Space) && textures.Count >= MinCutFrames;
         var finishedVideo = (int)videoPlayer.frame > (int)videoPlayer.frameCount - 3;
@@ -159,5 +145,23 @@ public class VideoReader : MonoBehaviour
         var depthAsProportionOfWidth = textures.Count / videoPreview.Rect.width;
         var frameProportion = videoPlayer.frame / (float)videoPlayer.frameCount;
         return depthAsProportionOfWidth > frameProportion;
+    }
+
+    private void HandleStuckFrameSkipping()
+    {
+        if (skipFrameCoroutine == null)
+        {
+            var currentFrame = videoPlayer.frame;
+
+            skipFrameCoroutine = this.WaitAndAct(skipFrameDelay, () =>
+            {
+                if (videoPlayer.frame == currentFrame)
+                {
+                    videoPlayer.StepForward();
+                }
+
+                skipFrameCoroutine = null;
+            });
+        }
     }
 }

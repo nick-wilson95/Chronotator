@@ -6,7 +6,7 @@ public class LayoutController : MonoBehaviour
     [SerializeField] private RectTransform UI;
     [SerializeField] private RectTransform Snapshot;
 
-    private readonly LayoutAnchors horizontalAnchors = new LayoutAnchors
+    private readonly LayoutAnchors horizontalAnchors = new()
     {
         UIAnchorMin = new Vector2(0, 0),
         UIAnchorMax = new Vector2(1, 0.5f),
@@ -14,7 +14,7 @@ public class LayoutController : MonoBehaviour
         SnapshotAnchorMax = new Vector2(1, 1)
     };
 
-    private readonly LayoutAnchors verticalAnchors = new LayoutAnchors
+    private readonly LayoutAnchors verticalAnchors = new()
     {
         UIAnchorMin = new Vector2(0, 0),
         UIAnchorMax = new Vector2(0.5f, 1),
@@ -29,11 +29,9 @@ public class LayoutController : MonoBehaviour
 
     private void OnPerspectiveChange(Perspective perspective)
     {
-        var newAnchors = perspective switch
-        {
-            Perspective.Horizontal => horizontalAnchors,
-            Perspective.Vertical => verticalAnchors
-        };
+        var newAnchors = perspective == Perspective.Horizontal
+            ? horizontalAnchors
+            : verticalAnchors;
 
         SetAnchors(newAnchors);
     }
