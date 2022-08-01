@@ -24,7 +24,7 @@ public class Settings : MonoBehaviour
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
     [HideInInspector] public UnityEvent<Perspective> OnPerspectiveChange = new();
 
-    private Perspective perspective = Perspective.Horizontal;
+    public Perspective Perspective { get; private set; } = Perspective.Horizontal;
 
     private IEnumerable<string> videoDropdownOptions;
 
@@ -99,13 +99,13 @@ public class Settings : MonoBehaviour
 
     public void OnTogglePerspective()
     {
-        perspective = perspective == Perspective.Horizontal
+        Perspective = Perspective == Perspective.Horizontal
             ? Perspective.Vertical
             : Perspective.Horizontal;
 
-        perspectiveToggleText.text = perspective.ToString();
+        perspectiveToggleText.text = Perspective.ToString();
 
-        OnPerspectiveChange.Invoke(perspective);
+        OnPerspectiveChange.Invoke(Perspective);
     }
 
     private void EnableSettings()

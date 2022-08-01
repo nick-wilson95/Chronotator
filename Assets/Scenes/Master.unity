@@ -993,14 +993,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 248832221}
-  m_LocalRotation: {x: 0.116706245, y: 0.116706245, z: 0.6974093, w: 0.6974093}
-  m_LocalPosition: {x: -5, y: 5.04, z: -7}
+  m_LocalRotation: {x: 0.328928, y: -0.06670615, z: 0.6382403, w: 0.6928247}
+  m_LocalPosition: {x: -4.58, y: 4.23, z: -5.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2057150289}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 32.747, y: 22.912, z: 92.118}
 --- !u!1 &267267233
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,6 +1307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e75a0b5aabbeea49938ecca99ccbd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settings: {fileID: 1659206245}
   videoReader: {fileID: 509814726}
   cube: {fileID: 2130376872}
   snapshotMaterial: {fileID: 2100000, guid: cb84235e43be4cb42ad81194c8ed51e4, type: 2}
@@ -2147,14 +2148,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.16504757, y: 0, z: 0, w: 0.9862856}
+  m_LocalRotation: {x: 0.16504757, y: 0, z: 0, w: 0.9862857}
   m_LocalPosition: {x: 0, y: 5, z: -7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2057150289}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 19, z: 90}
+  m_LocalEulerAnglesHint: {x: 19, y: 0, z: 0}
 --- !u!1 &1052724259
 GameObject:
   m_ObjectHideFlags: 0
@@ -3504,7 +3505,7 @@ Transform:
   m_GameObject: {fileID: 1686365176}
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1349075275}
@@ -4481,6 +4482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings: {fileID: 1659206245}
+  mainCamera: {fileID: 963194227}
   horizontalViewOrigin: {fileID: 2098600420}
   verticalViewOrigin: {fileID: 248832222}
   perceiver: {fileID: 963194228}
