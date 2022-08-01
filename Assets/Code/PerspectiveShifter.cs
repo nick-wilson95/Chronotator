@@ -9,7 +9,7 @@ public class PerspectiveShifter : MonoBehaviour
 
     private void Start()
     {
-        settings.OnPerspectiveToggle.AddListener(Shift);
+        settings.OnPerspectiveChange.AddListener(Shift);
     }
 
     public void Shift(Perspective perspective)

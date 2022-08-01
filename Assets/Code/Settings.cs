@@ -22,7 +22,7 @@ public class Settings : MonoBehaviour
     [HideInInspector] public UnityEvent<string> OnVideoWebUrlSelection = new();
     [HideInInspector] public UnityEvent<float> OnSpeedChange = new();
     [HideInInspector] public UnityEvent<float> OnRotationSpeedChange = new();
-    [HideInInspector] public UnityEvent<Perspective> OnPerspectiveToggle = new();
+    [HideInInspector] public UnityEvent<Perspective> OnPerspectiveChange = new();
 
     private Perspective perspective = Perspective.Horizontal;
 
@@ -105,7 +105,7 @@ public class Settings : MonoBehaviour
 
         perspectiveToggleText.text = perspective.ToString();
 
-        OnPerspectiveToggle.Invoke(perspective);
+        OnPerspectiveChange.Invoke(perspective);
     }
 
     private void EnableSettings()
