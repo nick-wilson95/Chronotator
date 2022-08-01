@@ -11,11 +11,7 @@ public class Snapshooter : MonoBehaviour
     [SerializeField] private Image snapshotImage;
     [SerializeField] private RectTransform snapshotTransform;
 
-    private Texture2D horizontalSnapshotTexture;
-    private SnapshotRenderer horizontalSnapshotRenderer;
-
-    private Texture2D verticalSnapshotTexture;
-    private SnapshotRenderer verticalSnapshotRenderer;
+    private SnapshotRenderer snapshotRenderer;
 
     private Vector3 cubePositionLastFrame;
     private Quaternion cubeRotationLastFrame;
@@ -23,7 +19,7 @@ public class Snapshooter : MonoBehaviour
     private void Start()
     {
         videoReader.OnFinishReading.AddListener(GetTextures);
-        //settings.OnPerspectiveChange.AddListener(TakeSnapshot);
+        settings.OnPerspectiveChange.AddListener(OnPerspectiveChange);
     }
 
     private void Update()
@@ -33,7 +29,7 @@ public class Snapshooter : MonoBehaviour
 
         if (!videoReader.IsReading && (cubeHasMoved || cubeHasRotated))
         {
-            TakeSnapshot(settings.Perspective);
+            TakeSnapshot();
         }
 
         cubePositionLastFrame = cube.position;
@@ -42,13 +38,17 @@ public class Snapshooter : MonoBehaviour
 
     private void GetTextures(List<Texture2D> textures)
     {
-        horizontalSnapshotTexture = CreateHorizontalSnapshotTexture(textures[0]);
-        horizontalSnapshotRenderer = new SnapshotRenderer(textures, horizontalSnapshotTexture, cube, Perspective.Horizontal);
+        var snapshotTexture = CreateSnapshotTexture(textures[0]);
+        snapshotRenderer = new SnapshotRenderer(textures, snapshotTexture, cube);
 
-        verticalSnapshotTexture = CreateVerticalSnapshotTexture(textures[0]);
-        verticalSnapshotRenderer = new SnapshotRenderer(textures, verticalSnapshotTexture, cube, Perspective.Vertical);
+        TakeSnapshot();
+    }
 
-        TakeSnapshot(settings.Perspective);
+    private Texture2D CreateSnapshotTexture(Texture2D sampleFrame)
+    {
+        return settings.Perspective == Perspective.Horizontal
+            ? CreateHorizontalSnapshotTexture(sampleFrame)
+            : CreateVerticalSnapshotTexture(sampleFrame);
     }
 
     private Texture2D CreateHorizontalSnapshotTexture(Texture2D sampleFrame)
@@ -67,18 +67,18 @@ public class Snapshooter : MonoBehaviour
         return new Texture2D(snapshotTextureWidth, (int)snapshotTextureHeight, TextureFormat.RGB24, false);
     }
 
-    public void TakeSnapshot(Perspective perspective)
+    private void TakeSnapshot()
     {
-        if (perspective == Perspective.Horizontal)
-        {
-            horizontalSnapshotRenderer.Render();
-            SetSnapshotTexture(horizontalSnapshotTexture);
-        }
-        else
-        {
-            verticalSnapshotRenderer.Render();
-            SetSnapshotTexture(verticalSnapshotTexture);
-        }
+        snapshotRenderer.Render(settings.Perspective);
+        SetSnapshotTexture(snapshotRenderer.SnapshotTexture);
+    }
+
+    private void OnPerspectiveChange(Perspective newPerspective)
+    {
+        var newSnapshotTexture = CreateSnapshotTexture(snapshotRenderer.Textures[0]);
+        snapshotRenderer.UpdateSnapshotTexture(newSnapshotTexture);
+
+        TakeSnapshot();
     }
 
     private void SetSnapshotTexture(Texture2D texture)

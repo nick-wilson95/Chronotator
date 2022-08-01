@@ -8,7 +8,7 @@ public static class Texture2DExtensions
     }
     public static void SetRow(this Texture2D texture, int y, Color[] pixels)
     {
-        texture.SetPixels(0, y, 1, texture.height, pixels);
+        texture.SetPixels(0, y, texture.width, 1, pixels);
     }
 
     public static Color[] GetColumn(this Texture2D texture, int x)
@@ -18,6 +18,6 @@ public static class Texture2DExtensions
 
     public static Color[] GetRow(this Texture2D texture, int y)
     {
-        return texture.GetPixels(0, y, 1, texture.height);
+        return texture.GetPixels(0, y, texture.width, 1);
     }
 }
