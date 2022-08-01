@@ -3247,7 +3247,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1659206244}
   - component: {fileID: 1659206245}
-  - component: {fileID: 1659206246}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -3282,7 +3281,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c43d57c7dae41a43849cd843b0c7b1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoLookup: {fileID: 1659206246}
+  videoLookup:
+  - name: Asteroids
+    clip: {fileID: 32900000, guid: ecc01c9199871764097ca11e8ef242bb, type: 3}
+  - name: Bikes
+    clip: {fileID: 32900000, guid: f03178dd36ff2f84f86f4c83201f6b63, type: 3}
+  - name: Flamingos Flying
+    clip: {fileID: 32900000, guid: e9fc05864098ff745bc535efb2867395, type: 3}
+  - name: Flamingos Standing
+    clip: {fileID: 32900000, guid: eb7c31cda1efc02418ef6662f14049b6, type: 3}
+  - name: Jellyfish
+    clip: {fileID: 32900000, guid: f2e828a1a893e704bba95111c826a355, type: 3}
+  - name: Penguins
+    clip: {fileID: 32900000, guid: 26dfa7a15c0a4034abd38e64947e4a13, type: 3}
   videoDropdown: {fileID: 432734280}
   videoBrowser: {fileID: 1643178044}
   speedSlider: {fileID: 1349476566}
@@ -3309,31 +3320,6 @@ MonoBehaviour:
   OnPerspectiveChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1659206246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1659206243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f2388ca7b9a3eb489bb3567f79da5b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  videos:
-  - name: Asteroids
-    clip: {fileID: 32900000, guid: ecc01c9199871764097ca11e8ef242bb, type: 3}
-  - name: Bikes
-    clip: {fileID: 32900000, guid: f03178dd36ff2f84f86f4c83201f6b63, type: 3}
-  - name: Flamingos Standing
-    clip: {fileID: 32900000, guid: eb7c31cda1efc02418ef6662f14049b6, type: 3}
-  - name: Flamingos Flying
-    clip: {fileID: 32900000, guid: e9fc05864098ff745bc535efb2867395, type: 3}
-  - name: Jellyfish
-    clip: {fileID: 32900000, guid: f2e828a1a893e704bba95111c826a355, type: 3}
-  - name: Penguins
-    clip: {fileID: 32900000, guid: 26dfa7a15c0a4034abd38e64947e4a13, type: 3}
 --- !u!1 &1675327470
 GameObject:
   m_ObjectHideFlags: 0

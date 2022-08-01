@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    [SerializeField] private VideoLookup videoLookup;
+    [SerializeField] private List<Video> videoLookup;
     [SerializeField] private TMP_Dropdown videoDropdown;
     [SerializeField] private Button videoBrowser;
     [SerializeField] private Slider speedSlider;
@@ -32,13 +32,13 @@ public class Settings : MonoBehaviour
 
     private void Awake()
     {
-        videoDropdownOptions = videoLookup.Videos.Select(x => x.Name).Prepend("Select a video...");
+        videoDropdownOptions = videoLookup.Select(x => x.Name).Prepend("Select a video...");
     }
 
     private void Start()
     {
         videoDropdown.SetOptions(videoDropdownOptions);
-        videoDropdown.SetValueWithoutNotify(1);
+        videoDropdown.SetValueWithoutNotify(videoDropdownOptions.Count());
         this.OnFrameEnd(BroadcastInitialSettings);
     }
 
@@ -72,7 +72,7 @@ public class Settings : MonoBehaviour
 
         var videoName = videoDropdown.GetCurrentOption();
 
-        var video = videoLookup.Videos.Single(x => x.Name == videoName);
+        var video = videoLookup.Single(x => x.Name == videoName);
 
         OnVideoDropdownSelection.Invoke(video);
     }

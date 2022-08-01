@@ -1,14 +1,6 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
-
-public class VideoLookup : MonoBehaviour
-{
-    [SerializeField] private List<Video> videos;
-
-    public List<Video> Videos => videos;
-}
 
 [Serializable]
 public struct Video
