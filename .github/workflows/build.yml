@@ -1,5 +1,8 @@
 name: Build Unity project
-on: push
+on:
+  push:
+    branches:
+      - master
 jobs:
   activation:
     name: Build Unity project
