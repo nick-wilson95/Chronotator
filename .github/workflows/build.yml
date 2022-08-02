@@ -23,6 +23,10 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: StandaloneWindows64
+      - name: Delete Existing Artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '1 second'
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
