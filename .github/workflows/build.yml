@@ -1,12 +1,21 @@
-- uses: game-ci/unity-builder@v2
-  env:
-    UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-    UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-    UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-  with:
-    targetPlatform: WebGL
-
-- uses: actions/upload-artifact@v2
-  with:
-    name: Build
-    path: build
+name: Build Unity project
+on:
+  workflow_dispatch: {}
+jobs:
+  activation:
+    name: Build Unity project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Build
+          path: build
