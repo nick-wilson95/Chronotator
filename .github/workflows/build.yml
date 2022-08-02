@@ -8,6 +8,13 @@ jobs:
     name: Build Unity project
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/cache@v2
+        with:
+          path: Library
+          key: Library-Chronotator-StandaloneWindows64
+          restore-keys: |
+            Library-Chronotator-
+            Library-
       - name: Build
         uses: game-ci/unity-builder@v2
         env:
@@ -15,7 +22,7 @@ jobs:
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          targetPlatform: WebGL
+          targetPlatform: StandaloneWindows64
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
