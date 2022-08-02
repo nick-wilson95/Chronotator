@@ -38,7 +38,10 @@ public class Settings : MonoBehaviour
     private void Start()
     {
         videoDropdown.SetOptions(videoDropdownOptions);
-        videoDropdown.SetValueWithoutNotify(videoDropdownOptions.Count());
+
+        var randomVideoIndex = Random.Range(1, videoDropdownOptions.Count());
+
+        videoDropdown.SetValueWithoutNotify(randomVideoIndex);
         this.OnFrameEnd(BroadcastInitialSettings);
     }
 
