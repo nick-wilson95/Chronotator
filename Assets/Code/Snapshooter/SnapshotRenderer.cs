@@ -139,11 +139,11 @@ public class SnapshotRenderer
 
     private Color[] GetPixelRow(Vector2 rightFaceLocation)
     {
-        var textureDepth = (int)Mathf.Clamp((1 + rightFaceLocation.x) / 2 * frameCount, 0, frameCount - 1);
+        var textureDepth = (int)Mathf.Clamp((1 + rightFaceLocation.y) / 2 * frameCount, 0, frameCount - 1);
 
-        var yIndex = (int)Mathf.Clamp((1 + rightFaceLocation.y) / 2 * frameHeight, 0, frameHeight - 1);
+        var rowIndex = (int)Mathf.Clamp((1 + rightFaceLocation.x) / 2 * frameHeight, 0, frameHeight - 1);
 
-        return Textures[textureDepth].GetRow(yIndex);
+        return Textures[textureDepth].GetRow(rowIndex);
     }
 
     private void ResetSnapshotTexture()

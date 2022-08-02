@@ -21,6 +21,9 @@ public class CubeControls : MonoBehaviour
     {
         settings.OnSpeedChange.AddListener(SetSpeed);
         settings.OnRotationSpeedChange.AddListener(SetRotationSpeed);
+
+        settings.OnPerspectiveChange.AddListener(_ => ResetCube());
+        videoReader.OnFinishReading.AddListener(_ => ResetCube());
     }
 
     private void Update()
@@ -69,5 +72,11 @@ public class CubeControls : MonoBehaviour
     private void SetRotationSpeed(float value)
     {
         rotationSpeed = Mathf.Lerp(minRotationSpeed, maxRotationSpeed, value);
+    }
+
+    private void ResetCube()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
     }
 }
