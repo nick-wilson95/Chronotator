@@ -34,12 +34,24 @@ public static class MonoBehaviourExtensions
         action();
     }
 
-    public static Coroutine WaitAndAct(this MonoBehaviour monoBehaviour, int frames, Action action)
+    public static Coroutine WaitSecondsAndAct(this MonoBehaviour monoBehaviour, float seconds, Action action)
     {
-        return monoBehaviour.StartCoroutine(WaitAndAct(frames, action));
+        return monoBehaviour.StartCoroutine(WaitSecondsAndAct(seconds, action));
     }
 
-    private static IEnumerator WaitAndAct(int Frames, Action action)
+    private static IEnumerator WaitSecondsAndAct(float seconds, Action action)
+    {
+        yield return new WaitForSeconds(seconds);
+
+        action();
+    }
+
+    public static Coroutine WaitFramesAndAct(this MonoBehaviour monoBehaviour, int frames, Action action)
+    {
+        return monoBehaviour.StartCoroutine(WaitFramesAndAct(frames, action));
+    }
+
+    private static IEnumerator WaitFramesAndAct(int Frames, Action action)
     {
         for (var i = 0; i < Frames; i++)
         {

@@ -153,7 +153,7 @@ public class VideoReader : MonoBehaviour
         {
             var currentFrame = videoPlayer.frame;
 
-            skipFrameCoroutine = this.WaitAndAct(skipFrameDelay, () =>
+            skipFrameCoroutine = this.WaitFramesAndAct(skipFrameDelay, () =>
             {
                 if (videoPlayer.frame == currentFrame)
                 {
