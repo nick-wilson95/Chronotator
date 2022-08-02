@@ -15,10 +15,8 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: Library
-          key: Library-Chronotator-StandaloneWindows64
-          restore-keys: |
-            Library-Chronotator-
-            Library-
+          key: Library-Chronotator
+          restore-keys: Library-
       - name: Build
         uses: game-ci/unity-builder@v2
         env:
