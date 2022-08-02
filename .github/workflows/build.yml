@@ -1,6 +1,8 @@
 name: Build Unity project
 on:
-  workflow_dispatch: {}
+  push:
+    branches:
+      - main
 jobs:
   activation:
     name: Build Unity project
