@@ -20,7 +20,7 @@ What is temporal rotation?
 
 *90 degree horizontal rotation:* <br/>
 *One column of pixels changing through time.* <br/>
-Flamingos that moved across this column over the video are somewhat recogniseable <br/>
+Flamingos that moved across this column over the video are somewhat recogniseable. <br/>
 <img src="https://user-images.githubusercontent.com/43935094/182721830-9b609b38-c10d-4ffe-9371-d274f0530e04.PNG" alt="drawing" height="300"/>
 
 *45 degree vertical rotation:* <br/>
