@@ -120,8 +120,8 @@ public class SnapshotRenderer
     {
         var snapshotTextureCentreY = SnapshotTexture.height / 2;
 
-        var topPixelBound = (int)(snapshotTextureCentreY + bounds.Left * frameHeight / 2);
-        var bottomPixelBound = (int)(snapshotTextureCentreY + bounds.Right * frameHeight / 2);
+        var topPixelBound = (int)(snapshotTextureCentreY - bounds.Right * frameHeight / 2);
+        var bottomPixelBound = (int)(snapshotTextureCentreY - bounds.Left * frameHeight / 2);
 
         if (topPixelBound == bottomPixelBound) return;
 
@@ -129,7 +129,7 @@ public class SnapshotRenderer
         {
             if (topPixelBound + i < 0 || topPixelBound + i >= SnapshotTexture.height) continue;
 
-            var rightFaceLocation = Vector2.Lerp(bounds.RelativeLeft, bounds.RelativeRight, (float)i / (bottomPixelBound - topPixelBound));
+            var rightFaceLocation = Vector2.Lerp(-bounds.RelativeRight, -bounds.RelativeLeft, (float)i / (bottomPixelBound - topPixelBound));
 
             var pixelColumn = GetPixelRow(rightFaceLocation);
 
