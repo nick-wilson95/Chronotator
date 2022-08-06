@@ -2,12 +2,18 @@
 Play around with temporal rotation of videos in real time.
 
 What is temporal rotation?
-- Take a video
+- Consider a video
 - Think of each frame as a square
 - Space out those squares to form a cube
 - Playing the video is analogous to sweeping a plane through from the front of the cube to the back
 - Temporal rotation is rotating this plane so that it hits multiple frames in different places
 - This results in images where different regions are from different times in the video
+
+## Getting started
+- Ensure you are using a [Windows PC](https://www.pcspecialist.co.uk/)
+- Download the [latest release](https://github.com/nick-wilson95/Chronotator/releases/download/v1.0/Chronotator.zip) of Chronotator
+- Extract all files
+- Run Chronotator.exe
 
 ## Example
 
