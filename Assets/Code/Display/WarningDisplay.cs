@@ -4,12 +4,13 @@ using UnityEngine;
 public class WarningDisplay : MonoBehaviour
 {
     [SerializeField] private TMP_Text text;
+    [SerializeField] private VideoReader videoReader;
 
     private Coroutine endWarningCoroutine;
 
     private void Start()
     {
-        Warn("Use the arrow keys to move the cube...");
+        videoReader.OnFinishReading.AddListener(_ => Warn("Use the arrow keys to move the cube..."));
     }
 
     public void Warn(string warning)
@@ -22,6 +23,6 @@ public class WarningDisplay : MonoBehaviour
         text.enabled = true;
         text.text = warning;
 
-        endWarningCoroutine = this.WaitSecondsAndAct(10, () => text.enabled = false);
+        endWarningCoroutine = this.WaitSecondsAndAct(5, () => text.enabled = false);
     }
 }
